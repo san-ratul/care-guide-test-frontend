@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
@@ -35,7 +35,25 @@ import { PatientFormDialog } from "@/components/patients/PatientFormDialog";
 import { PATIENT_CONDITIONS, type Patient } from "@/types";
 import { formatDate, titleCase } from "@/lib/utils";
 
+function DoctorDetailSkeleton() {
+  return (
+    <div className="space-y-4" role="status" aria-label="Loading doctor">
+      <div className="h-8 w-40 animate-pulse rounded bg-slate-200" />
+      <div className="h-44 animate-pulse rounded-xl bg-slate-200" />
+      <div className="h-72 animate-pulse rounded-xl bg-slate-200" />
+    </div>
+  );
+}
+
 export default function DoctorDetailPage() {
+  return (
+    <Suspense fallback={<DoctorDetailSkeleton />}>
+      <DoctorDetailContent />
+    </Suspense>
+  );
+}
+
+function DoctorDetailContent() {
   const params = useParams<{ id: string }>();
   const doctorId = params.id;
   const router = useRouter();

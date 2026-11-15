@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Activity, LayoutDashboard, Stethoscope, Users, X } from "lucide-react";
@@ -46,6 +47,10 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   );
 }
 
+function NavLinksFallback() {
+  return <nav className="flex-1" aria-hidden="true" />;
+}
+
 function BrandMark() {
   return (
     <div className="flex items-center gap-2.5 px-5 pt-5">
@@ -66,7 +71,9 @@ export function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; onClose:
       {/* Desktop sidebar */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col bg-slate-900 lg:flex print:hidden">
         <BrandMark />
-        <NavLinks />
+        <Suspense fallback={<NavLinksFallback />}>
+          <NavLinks />
+        </Suspense>
         <div className="border-t border-white/5 px-5 py-4">
           <p className="text-[11px] leading-4 text-slate-500">
             Administrative portal for doctors and their patients.
@@ -94,7 +101,9 @@ export function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; onClose:
                 <X className="h-5 w-5" aria-hidden />
               </button>
             </div>
-            <NavLinks onNavigate={onClose} />
+            <Suspense fallback={<NavLinksFallback />}>
+              <NavLinks onNavigate={onClose} />
+            </Suspense>
           </div>
         </div>
       ) : null}

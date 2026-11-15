@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
@@ -28,7 +28,24 @@ import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { PatientFormDialog } from "@/components/patients/PatientFormDialog";
 import { formatDate } from "@/lib/utils";
 
+function PatientDetailSkeleton() {
+  return (
+    <div className="space-y-4" role="status" aria-label="Loading patient">
+      <div className="h-8 w-40 animate-pulse rounded bg-slate-200" />
+      <div className="h-56 animate-pulse rounded-xl bg-slate-200" />
+    </div>
+  );
+}
+
 export default function PatientDetailPage() {
+  return (
+    <Suspense fallback={<PatientDetailSkeleton />}>
+      <PatientDetailContent />
+    </Suspense>
+  );
+}
+
+function PatientDetailContent() {
   const params = useParams<{ id: string }>();
   const patientId = params.id;
   const router = useRouter();

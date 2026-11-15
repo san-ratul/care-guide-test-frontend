@@ -236,7 +236,8 @@ export default function DoctorsPage() {
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {doctorsQuery.data.data.map((doctor) => (
-                    <tr key={doctor._id} className="group transition-colors hover:bg-slate-50/80">                      <td className="px-5 py-3.5">
+                    <tr key={doctor._id} className="group transition-colors hover:bg-slate-50/80">
+                      <td className="px-5 py-3.5">
                         <Link href={`/doctors/${doctor._id}`} className="flex items-center gap-3">
                           <Avatar name={doctor.name} />
                           <div>
